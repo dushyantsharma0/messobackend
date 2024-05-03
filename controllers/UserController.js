@@ -142,33 +142,36 @@ const TotalNumbercart= async(req,resp)=>{
     }
 
 }
-const IncQuententity = async (req, resp) => {
-    const { name, quantity, email_id } = req.body;
+const IncQuententity= async(req, resp)=>{
+    const {name,quantity,email_id}=req.body
+const count= await countModel.findOne({email_id})
+    
 
-    // Assuming the correct model names are Count and CartDetail
-    const count = await countModel.findOne({ email_id });
-    const cart = await CartDetail.findOne({ name });
 
-    if (cart) {
-        if (count) {
-            if (cart.quantity > quantity) {
-                const data = cart.quantity - quantity;
-                await countModel.updateOne({ email_id }, { $inc: { count: data } });
-            } else if (cart.quantity < quantity) {
-                const data = quantity - cart.quantity;
-                await countModel.updateOne({ email_id }, { $inc: { count: data } });
-            }
+    const cart=await cartDetail.findOne({name})
+
+    if(cart){
+
+        if(count){
+         if(cart.quantity>quantity){
+           let data=cart.quantity-quantity
+           const update=await countModel.updateOne({email_id},{$inc:{count:data}})
         }
-        await CartDetail.updateOne({ name }, { $set: { quantity: quantity } });
+        if(cart.quantity<quantity){
+            let data=quantity+cart.quantity
+            const update=await countModel.updateOne({email_id},{$inc:{count:data}})
+        }
+    }
+        const update=await cartDetail.updateOne({name},{$set:{quantity:quantity}})
         return resp.status(200).json({
-            success: true,
-            data: cart
-        });
-    } else {
+            sucess:true,
+            data:cart
+        })
+    }else{
         return resp.status(400).json({
-            success: false,
-            message: "Cart is empty"
-        });
+            sucess:false,
+            message:"cart is empty"
+        })
     }
 }
 
