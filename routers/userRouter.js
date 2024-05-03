@@ -11,6 +11,9 @@ Router.route('/login').post(UserController.OtpCheck)
   
   Router.route('/cartshow').post(UserController.cartShow)
   Router.route('/totalcarts').post(UserController.TotalNumbercart)
+  Router.route('/increasequentity').post(UserController.IncQuententity)
+
+
 
 
 module.exports = Router;

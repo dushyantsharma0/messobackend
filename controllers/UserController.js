@@ -142,12 +142,28 @@ const TotalNumbercart= async(req,resp)=>{
     }
 
 }
-
+const IncQuententity= async(req, resp)=>{
+    const {name,quantity}=req.body
+    const cart=await cartDetail.findOne({name})
+    if(cart){
+        const update=await cartDetail.updateOne({name},{$set:{quantity:quantity}})
+        return resp.status(200).json({
+            sucess:true,
+            data:cart
+        })
+    }else{
+        return resp.status(400).json({
+            sucess:false,
+            message:"cart is empty"
+        })
+    }
+}
 
 module.exports = {
     Register,
     OtpCheck,
     CartDetail,
     cartShow,
-    TotalNumbercart
+    TotalNumbercart,
+    IncQuententity
 }
