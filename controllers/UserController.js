@@ -155,10 +155,10 @@ const count= await countModel.findOne({email_id})
         if(count){
          if(cart.quantity>quantity){
            let data=cart.quantity-quantity
-           const update=await countModel.updateOne({email_id},{$inc:{count:data}})
+           const update=await countModel.updateOne({email_id},{$inc:{count:-data}})
         }
         if(cart.quantity<quantity){
-            let data=quantity+cart.quantity
+            let data=quantity-cart.quantity
             const update=await countModel.updateOne({email_id},{$inc:{count:data}})
         }
     }
