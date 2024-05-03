@@ -143,9 +143,25 @@ const TotalNumbercart= async(req,resp)=>{
 
 }
 const IncQuententity= async(req, resp)=>{
-    const {name,quantity}=req.body
+    const {name,quantity,email_id}=req.body
+const count= await countModel.findOne({email_id})
+    
+
+
     const cart=await cartDetail.findOne({name})
+
     if(cart){
+
+        if(count){
+         if(cart.quantity>quantity){
+           let data=cart.quantity-quantity
+           const update=await countModel.updateOne({email_id},{$inc:{count:data}})
+        }
+        if(cart.quantity<quantity){
+            let data=quantity+cart.quantity
+            const update=await countModel.updateOne({email_id},{$inc:{count:data}})
+        }
+    }
         const update=await cartDetail.updateOne({name},{$set:{quantity:quantity}})
         return resp.status(200).json({
             sucess:true,
