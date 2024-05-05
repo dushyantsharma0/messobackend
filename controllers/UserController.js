@@ -4,44 +4,48 @@ const mailer=require('../helper/mailer')
 const cartDetail = require('../models/cartDetail')
 const countModel = require('../models/countModel')
 
+const otp= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
 
 const Register = async (req,resp)=>{
-   const otp= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
      const {email}=req.body
-
-
-
-     const msg=`<h1>your Otp is ${otp}</h1>`
-        
-      mailer.sendMail(email,'BX-MSHOTP',msg)
-
-
-
-
-    
-
-     
-     
-       
-        const newUser=new RegisterSchma({
-            email,
-            otp
+     const user=await RegisterSchma.findOne({email})
+     if(user){
+        user.otp=otp
+         return resp.status(400).json({
+             sucess:false,
+             message:"user already exist"
          })
-         
-        
+     }else{
+         const newUser=new RegisterSchma({
+             email,
+             otp
+         })
          await newUser.save()
-         
-        
-    
          return resp.status(200).json({
-             message:newUser
+             sucess:true,
+             message:"user registered successfully"
          })
-      
+     }
      
-     
-         
-   
+
+
+
+    
+ 
 }
+
+
+const otpSend =(req,resp)=>{
+    const {email}=req.body
+    const msg=`<h1>your Otp is ${otp}</h1>`
+        
+    mailer.sendMail(email,'BX-MSHOTP',msg)
+
+}
+
+
+
+
 
 const OtpCheck= async(req,resp)=>{
      const {email,otp}=req.body
@@ -193,5 +197,6 @@ module.exports = {
     CartDetail,
     cartShow,
     TotalNumbercart,
-    IncQuententity
+    IncQuententity,
+    otpSend,
 }
