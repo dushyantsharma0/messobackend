@@ -8,25 +8,36 @@ const countModel = require('../models/countModel')
 const Register = async (req,resp)=>{
    const otp= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
      const {email}=req.body
-     const user=await RegisterSchma.findOne({email})
+
+
+
+     const msg=`<h1>your Otp is </h1>`
+        
+      mailer.sendMail(email,'BX-MSHOTP',msg)
+
+
+
+
+    //  const user=await RegisterSchma.findOne({email})
+
      
-     if(!user){
+    //  if(!user){
        
-        const newUser=new RegisterSchma({
-            email,
-            otp
-         })
+    //     const newUser=new RegisterSchma({
+    //         email,
+    //         otp
+    //      })
          
         
-         await newUser.save()
-         const msg=`<h1>your Otp is ${newUser.otp}</h1>`
+    //      await newUser.save()
+    //      const msg=`<h1>your Otp is ${newUser.otp}</h1>`
         
-     mailer.sendMail(email,'BX-MSHOTP',msg)
-         return resp.status(200).json({
-             message:newUser
-         })
+    //  mailer.sendMail(email,'BX-MSHOTP',msg)
+    //      return resp.status(200).json({
+    //          message:newUser
+    //      })
       
-     }
+    //  }
      
          
    
