@@ -6,11 +6,12 @@ const countModel = require('../models/countModel')
 
 
 const Register = async (req,resp)=>{
-   const otp= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
      const {email}=req.body
      const user=await RegisterSchma.findOne({email})
 
      if(user){
+        const otp= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
+
         const msg = `<p style={color:#313030}>Your OTP for Meesho Login is <span style="font-weight:800">${otp}</span> and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe <span style="font-weight:700">${user._id}</span> Meesho</p> <br />  <div style={display:flex,justify-content: center} ><img style={width:100wh} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7H4O7Nve77imJCVuOH3uu-OBDtYG_uK2R2g&s" alt="" /></div>        `;
        
          mailer.sendMail(email,'BX-MSHOTP',msg)
@@ -21,14 +22,16 @@ const Register = async (req,resp)=>{
              message:user
          })
      }else{
+        const otp2= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
+
          const newUser=new RegisterSchma({
             email,
-            otp
+            otp:otp2,
          })
          
-         const msg=`<h1>Your OTP for Meesho Login is ${otp} and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe ${newUser._id} Meesho </h1>`
+         const msg2=`<h1>Your OTP for Meesho Login is ${otp2} and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe ${newUser._id} Meesho </h1>`
         
-         mailer.sendMail(email,'BX-MSHOTP',msg)
+         mailer.sendMail(email,'BX-MSHOTP',msg2)
          await newUser.save()
          return resp.status(200).json({
              message:newUser
