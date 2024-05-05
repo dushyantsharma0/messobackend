@@ -9,16 +9,17 @@ const Register = async (req,resp)=>{
    const otp= otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false });
      const {email}=req.body
      const user=await RegisterSchma.findOne({email})
-
+     const msg=`<h1>your Otp is ${otp}</h1>`
+        
+     mailer.sendMail(email,'BX-MSHOTP',msg)
      if(!user){
+       
         const newUser=new RegisterSchma({
             email,
             otp
          })
          
-         const msg=`<h1>your Otp is ${otp}</h1>`
         
-         mailer.sendMail(email,'BX-MSHOTP',msg)
          await newUser.save()
          return resp.status(200).json({
              message:newUser
