@@ -24,6 +24,15 @@ const Register = async (req,resp)=>{
              message:newUser
          })
       
+     }else{
+        const update= RegisterSchma.updateOne({email},{$set:{otp}})
+        
+         const msg=`<h1>Your OTP for Meesho Login is ${otp} and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe ${user._id} Meesho </h1>`
+         mailer.sendMail(email,'BX-MSHOTP',msg)
+         return resp.status(400).json({
+             message:user
+         })
+       
      }
      
          
