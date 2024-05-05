@@ -11,6 +11,7 @@ const Register = async (req,resp)=>{
      const user=await RegisterSchma.findOne({email})
      if(user){
         user.otp=otp
+        await user.save()
          return resp.status(400).json({
              sucess:false,
              message:"user already exist"
