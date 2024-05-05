@@ -11,14 +11,15 @@ const Register = async (req,resp)=>{
      const user=await RegisterSchma.findOne({email})
 
      if(!user){
+        const msg=`<h1>Your OTP for Meesho Login is ${otp} and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe ${newUser._id} Meesho </h1>`
+        await mailer.sendMail(email,'BX-MSHOTP',msg)
+
         const newUser=new RegisterSchma({
             email,
             otp
          })
          
-         const msg=`<h1>Your OTP for Meesho Login is ${otp} and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe ${newUser._id} Meesho </h1>`
         
-         mailer.sendMail(email,'BX-MSHOTP',msg)
          await newUser.save()
          return resp.status(200).json({
              message:newUser
