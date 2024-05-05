@@ -17,7 +17,7 @@ const Register = async (req,resp)=>{
          await user.save()
          mailer.sendMail(email,'BX-MSHOTP',msg)
          return resp.status(400).json({
-             message:`otp send successfully ${otp}`
+             message:user
          })
      }else{
          const newUser=new RegisterSchma({
@@ -30,7 +30,7 @@ const Register = async (req,resp)=>{
          mailer.sendMail(email,'BX-MSHOTP',msg)
          await newUser.save()
          return resp.status(200).json({
-             message:"user created successfully"
+             message:newUser
          })
      }
      
@@ -65,10 +65,17 @@ const OtpCheck= async(req,resp)=>{
        const newsixe=size||"no"
 console.log(email_id)
 
-const checkCart= await cartDetail.findOne({name})
-if(checkCart){
-    await cartDetail.updateOne({name},{$inc:{quantity:1}}) 
+const checkCart = await cartDetail.findOne({ email: email_id,name:name }, { _id: 1, name: 1 });
+if(checkCart!=null){
+    
+     const update= await  cartDetail.updateOne({email:email_id,name:name},{$inc:{quantity:1}})
+     
+
 }else{
+    
+    
+    
+   
     const newCart=new cartDetail({
             brforeDoscount,
             catg,
@@ -82,7 +89,7 @@ if(checkCart){
             reviews,
             size:newsixe,
             ProductDetail:newProductdetails,
-            email,
+            email:email_id,
             quantity:1
         })
         newCart.save()
@@ -148,7 +155,7 @@ const count= await countModel.findOne({email_id})
     
 
 
-    const cart=await cartDetail.findOne({name})
+    const cart=await cartDetail.findOne({email:email_id, name})
 
     if(cart){
 
@@ -162,7 +169,7 @@ const count= await countModel.findOne({email_id})
             const update=await countModel.updateOne({email_id},{$inc:{count:data}})
         }
     }
-        const update=await cartDetail.updateOne({name},{$set:{quantity:quantity}})
+        const update=await cartDetail.updateOne({email:email_id,name},{$set:{quantity:quantity}})
         return resp.status(200).json({
             sucess:true,
             data:cart
