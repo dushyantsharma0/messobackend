@@ -5,12 +5,14 @@ const cartDetail = require('../models/cartDetail')
 const countModel = require('../models/countModel')
 
 
+const otpGenerator = require('otp-generator'); // Import the otpGenerator library
+
 const Register = async (req, resp) => {
-    const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
     const { email } = req.body;
     const user = await RegisterSchma.findOne({ email });
 
     if (user) {
+        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false }); // Generate OTP
         const msg = `<p style="color:#313030">Your OTP for Meesho Login is <span style="font-weight:800">${otp}</span> and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe <span style="font-weight:700">${user._id}</span> Meesho</p> <br />  <div style="display:flex; justify-content: center" ><img style="width:100wh" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7H4O7Nve77imJCVuOH3uu-OBDtYG_uK2R2g&s" alt="" /></div>`;
         user.otp = otp;
 
@@ -20,6 +22,7 @@ const Register = async (req, resp) => {
             message: user
         });
     } else {
+        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false }); // Generate OTP
         const newUser = new RegisterSchma({
             email,
             otp
