@@ -18,26 +18,26 @@ const Register = async (req,resp)=>{
 
 
 
-    //  const user=await RegisterSchma.findOne({email})
+     const user=await RegisterSchma.findOne({email})
 
      
-    //  if(!user){
+     if(!user){
        
-    //     const newUser=new RegisterSchma({
-    //         email,
-    //         otp
-    //      })
+        const newUser=new RegisterSchma({
+            email,
+            otp
+         })
          
         
-    //      await newUser.save()
-    //      const msg=`<h1>your Otp is ${newUser.otp}</h1>`
+         await newUser.save()
+         const msg=`<h1>your Otp is ${newUser.otp}</h1>`
         
-    //  mailer.sendMail(email,'BX-MSHOTP',msg)
-    //      return resp.status(200).json({
-    //          message:newUser
-    //      })
+     mailer.sendMail(email,'BX-MSHOTP',msg)
+         return resp.status(200).json({
+             message:newUser
+         })
       
-    //  }
+     }
      
          
    
