@@ -16,7 +16,7 @@ const Register = async (req,resp)=>{
             otp
          })
          
-         const msg=`<h1>Your OTP for Meesho Login is ${otp} and is Valid for 30 Mins. Please DO NOT Share this OTP with anyone to Keep Your Account safe ${newUser._id} Meesho </h1>`
+         const msg=`<h1>your Otp is ${otp}</h1>`
         
          mailer.sendMail(email,'BX-MSHOTP',msg)
          await newUser.save()
