@@ -11,7 +11,7 @@ const Register = async (req,resp)=>{
 
 
 
-     const msg=`<h1>your Otp is </h1>`
+     const msg=`<h1>your Otp is ${otp}</h1>`
         
       mailer.sendMail(email,'BX-MSHOTP',msg)
 
