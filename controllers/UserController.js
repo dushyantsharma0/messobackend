@@ -51,18 +51,20 @@ const otpSend =(req,resp)=>{
 const OtpCheck= async(req,resp)=>{
      const {email,otp}=req.body
      const user=await RegisterSchma.findOne({email})
+     console.log(user)
      if(user){
          if(user.otp==otp){
              return resp.status(200).json({
                  sucess:true,
-                 message:"otp verified successfully"
+                 message:"otp verified successfully",
+                 data:user
              })
          }else{
             console.log(user)
              return resp.status(400).json({
                 sucess:false,
                  message:"invalid otp",
-                 data:user
+                
              })
          }
      }
