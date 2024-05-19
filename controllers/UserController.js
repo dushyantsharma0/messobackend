@@ -61,7 +61,8 @@ const OtpCheck= async(req,resp)=>{
             console.log(user)
              return resp.status(400).json({
                 sucess:false,
-                 message:"invalid otp"
+                 message:"invalid otp",
+                 data:user
              })
          }
      }
